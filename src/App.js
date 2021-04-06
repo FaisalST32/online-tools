@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useState, useCallback} from 'react';
+import {convertToInterface} from "./utils/convertToInterface";
 
 function App() {
+  const [classContent, setClassContent] = useState();
+  const [convertedInterface, setConvertedInterface] = useState();
+  const generateInterface = useCallback(() => {
+      const convertedInterfaceContent = convertToInterface(classContent);
+      setConvertedInterface(convertedInterfaceContent)
+  }, [classContent])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div><textarea value={classContent} onChange={(e) => { setClassContent(e.target.value) }} /></div>
+      <button
+          onClick={generateInterface}>
+          Convert to Interface
+      </button>
+        <pre>
+            {convertedInterface}
+        </pre>
     </div>
   );
 }
